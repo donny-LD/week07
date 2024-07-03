@@ -1,5 +1,6 @@
 const Book = require("./model");
 
+// function to get all books
 const getAllBooks = async (request, response) => {
   // step1: db interaction
 
@@ -16,6 +17,27 @@ const getAllBooks = async (request, response) => {
   response.send(successResponse);
 };
 
-module.exports = {
-    getAllBooks: getAllBooks,
+
+//controller function to add new book
+const addBook = async (request, response) => {
+  const book = await Book.create({
+    title: request.body.title,
+    author: request.body.author,
+    genre: request.body.genre,
+  });
+
+  const successResponse = {
+    message: "success",
+    book: book,
+  };
+
+  response.send(successResponse);
 };
+
+module.exports = {
+    getAllBooks: getAllBooks,addBook
+
+};
+// module.exports = {
+//   addBook: addBook,
+// };
