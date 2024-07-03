@@ -1,25 +1,14 @@
 const{ Router } = require("express");
 const bookRouter = Router();
 
-const Book =require("./model");
+const Book = require("./model")
 
+
+
+const { getAllBooks } = require("./controllers");
 
 
 // getAllBooks
-app.get("/books/getAllBooks", async (request, response) => {
-  // step1: db interaction
-
-  const books = await Book.find({});
-
-  // step2: create success object
-  const successResponse = {
-    message: "success",
-    books: books,
-  };
-
-  // step 3: send response
-
-  response.send(successResponse);
-});
+bookRouter.get("/books/getAllBooks",getAllBooks);
 
 module.exports = bookRouter;
