@@ -1,75 +1,61 @@
-const express = require ("express");
+require("dotenv").config()
+const express = require("express");
+const mongoose = require("mongoose");
 
-const app = express ();
-
+const app = express();
 
 app.use(express.json());
 
-const fakeData = [
-  { id: 1, title: "book1", author: "author1", genre: "genre1" },
-  { id: 2, title: "book2", author: "author2", genre: "genre2" },
-  { id: 3, title: "book3", author: "author3", genre: "genre3" },
-];
-//example
-app.get("/books",(request, response)=>{
+const connection = async() => {
+    await mongoose.connect(process.env.MONGO_URI)
+    console.log ("db is working")
+}
 
-    // console.log(requst.path,":", typeof requst.path);
-    // console.log(response);
-    response.send("hello from /books")
-})
+connection()
+
+const bookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  genre: {
+    type: String,
+    required: true,
+
+  },
+  author:{
+    type:String,
+
+  }
+});
+
+const Book = mongoose.model ("Book", bookSchema)
 
 //get all books
-app.get("/books/getAllBooks",(request, response)=>{
-    console.log(request.path);
+app.get("/books/getAllBooks", (request, response) => {
+    
+});
+
+app.post("/books/addBook",async (request, response) => {
+    const book = await Book.create ({
+        title:request.body.title,
+        genre:request.body.genre,
+        author:request.body.author,
+    })
 
     const successResponse = {
         message: "success",
-        books: fakeData,
-    };
-    
-    response.send(successResponse);
+        book:book
+    }
+
+    response.send(successResponse)
 });
 
-app.post ("/books/addBook", (request,response) => {
-//   console.log(request.body);
-  fakeData.push(request.body);
+app.put("/books", (request, response) => {});
 
-  const successResponse = {
-    message: "success",
-    books: fakeData,
-  };
- 
+app.delete("/books", (request, response) => {});
 
-  response.send(successResponse);
-});
-
-// app.put ("/books",(request,response) => {
-//     function findBooks (x) { 
-//         return x.title === request.body.title;
-
-//         const index = books.findIndex(findBook);
-
-//         console.log (index);
-//     }
-//     const index 
-
-
-// });
-
-// app.delete("/books", (request, response) => {
-
-//     // function findBooks (x) { 
-//     //     return x.title === request.body.title;
-
-//     //     const index = books.findIndex(findBooks);
-
-//     //     console.log (index);
-
-// });
-
-
-
-
-app.listen(5001,()=>{
-    console.log(`Server listening of port 5001`);
+app.listen(5001, () => {
+  console.log(`Server listening of port 5001`);
 });
