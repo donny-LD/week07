@@ -34,10 +34,46 @@ const addBook = async (request, response) => {
   response.send(successResponse);
 };
 
-module.exports = {
-    getAllBooks: getAllBooks,addBook
 
+const deleteBook = async (request, response) => {
+  const book = await Book.deleteOne({
+    title: request.body.title,
+  });
+
+  const successResponse = {
+    message: "success",
+    book: book,
+  };
+  response.send(successResponse);
 };
+
+module.exports = {
+    getAllBooks: getAllBooks,
+    addBook:addBook,
+    deleteBook:deleteBook,
+};
+
+
+// const deleteBook = async (request, response) => {
+//   try {
+//     const result = await Book.deleteOne({
+//       title: request.body.title,
+//     });
+
+//     if (result.deletedCount === 0) {
+//       return response.status(404).json({ message: "Book not found" });
+//     }
+
+//     const successResponse = {
+//       message: "Book successfully deleted",
+//       result: result,
+//     };
+//     response.status(200).send(successResponse);
+//   } catch (error) {
+//     response.status(500).json({ message: error.message });
+//   }
+// };
+
 // module.exports = {
-//   addBook: addBook,
+//   deleteBook,
 // };
