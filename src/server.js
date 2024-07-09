@@ -1,16 +1,15 @@
-require ("dotenv").config();
-const express = require ("express");
+require("dotenv").config();
+const express = require("express");
 const mongoose = require("mongoose");
-const cors = require ("cors")
+const cors = require("cors");
 
-const Book = require ("./books/model");
+const Book = require("./books/model");
 
 const connection = require("./db/connection");
 
-const bookRouter = require ("./books/routes");
+const bookRouter = require("./books/routes");
 
-
-const app = express ();
+const app = express();
 
 app.use(cors());
 
@@ -20,19 +19,7 @@ connection();
 
 app.use(bookRouter);
 
-
-
-
-
-
-app.put ("/books", async (request,response) => {
-
-
-});
-
-
-
-
+// app.put("/books", async (request, response) => {});
 
 // app.delete("/books", (request, response) => {
 //   const title = request.body.title; // Get the title from the request body
@@ -50,9 +37,6 @@ app.put ("/books", async (request,response) => {
 //     .catch((error) => response.status(500).json({ message: error.message })); // Error response
 // });
 
-
-
-
-app.listen(5001,()=>{
-    console.log(`Server listening of port 5001`);
+app.listen(5001, () => {
+  console.log(`Server listening of port 5001`);
 });

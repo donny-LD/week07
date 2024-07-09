@@ -17,7 +17,6 @@ const getAllBooks = async (request, response) => {
   response.send(successResponse);
 };
 
-
 //controller function to add new book
 const addBook = async (request, response) => {
   const book = await Book.create({
@@ -34,6 +33,25 @@ const addBook = async (request, response) => {
   response.send(successResponse);
 };
 
+const putBook = async (request, response) => {
+  const { newAuthor } = request.body; // Destructure newAuthor from request body
+  const { title } = request.params; // Get title from URL parameters
+
+  const result = await Book.updateOne(
+    { title }, // Filter
+    { author: newAuthor } // Update
+  )
+  .then((result) => {
+    const successResponse = {
+      message: result.matchedCount === 0 ? "Book not found" : "Author successfully updated",
+      result: result, // Return the update result
+    };
+    response.status(result.matchedCount === 0 ? 404 : 200).json(successResponse);
+  })
+  .catch((error) => {
+    response.status(500).json({ message: error.message }); // Error response
+  });
+};
 
 const deleteBook = async (request, response) => {
   const book = await Book.deleteOne({
@@ -48,11 +66,11 @@ const deleteBook = async (request, response) => {
 };
 
 module.exports = {
-    getAllBooks: getAllBooks,
-    addBook:addBook,
-    deleteBook:deleteBook,
+  getAllBooks: getAllBooks,
+  addBook: addBook,
+  deleteBook: deleteBook,
+  putBook: putBook,
 };
-
 
 // const deleteBook = async (request, response) => {
 //   try {

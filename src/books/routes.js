@@ -5,7 +5,7 @@ const bookRouter = Router();
 
 
 
-const { getAllBooks, addBook,deleteBook } = require("./controllers");
+const { getAllBooks, addBook, deleteBook ,putBook} = require("./controllers");
 
 
 
@@ -14,6 +14,9 @@ bookRouter.get("/books/getAllBooks",getAllBooks,);
 
 //addBook
 bookRouter.post("/books/addBook",addBook);
+
+// update book 
+bookRouter.put("/books/putBook",putBook);
 
 //delete book
 bookRouter.delete("/books/deleteBook",deleteBook);
