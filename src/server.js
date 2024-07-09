@@ -1,75 +1,42 @@
-const express = require ("express");
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-const app = express ();
+const Book = require("./books/model");
 
+const connection = require("./db/connection");
+
+const bookRouter = require("./books/routes");
+
+const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
-const fakeData = [
-  { id: 1, title: "book1", author: "author1", genre: "genre1" },
-  { id: 2, title: "book2", author: "author2", genre: "genre2" },
-  { id: 3, title: "book3", author: "author3", genre: "genre3" },
-];
-//example
-app.get("/books",(request, response)=>{
+connection();
 
-    // console.log(requst.path,":", typeof requst.path);
-    // console.log(response);
-    response.send("hello from /books")
-})
+app.use(bookRouter);
 
-//get all books
-app.get("/books/getAllBooks",(request, response)=>{
-    console.log(request.path);
-
-    const successResponse = {
-        message: "success",
-        books: fakeData,
-    };
-    
-    response.send(successResponse);
-});
-
-app.post ("/books/addBook", (request,response) => {
-//   console.log(request.body);
-  fakeData.push(request.body);
-
-  const successResponse = {
-    message: "success",
-    books: fakeData,
-  };
- 
-
-  response.send(successResponse);
-});
-
-// app.put ("/books",(request,response) => {
-//     function findBooks (x) { 
-//         return x.title === request.body.title;
-
-//         const index = books.findIndex(findBook);
-
-//         console.log (index);
-//     }
-//     const index 
-
-
-// });
+// app.put("/books", async (request, response) => {});
 
 // app.delete("/books", (request, response) => {
+//   const title = request.body.title; // Get the title from the request body
 
-//     // function findBooks (x) { 
-//     //     return x.title === request.body.title;
-
-//     //     const index = books.findIndex(findBooks);
-
-//     //     console.log (index);
-
+//   Book.findOneAndDelete({ title })
+//     .then(
+//       (deletedBook) =>
+//         deletedBook
+//           ? response.status(200).json({
+//               message: "Book successfully deleted",
+//               book: deletedBook, // Return the deleted book information
+//             })
+//           : response.status(404).json({ message: "Book not found" }) // If no book is found
+//     )
+//     .catch((error) => response.status(500).json({ message: error.message })); // Error response
 // });
 
-
-
-
-app.listen(5001,()=>{
-    console.log(`Server listening of port 5001`);
+app.listen(5001, () => {
+  console.log(`Server listening of port 5001`);
 });
